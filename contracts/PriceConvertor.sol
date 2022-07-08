@@ -9,11 +9,11 @@ library PriceConvertor{
 (,int256 price,,,)=priceFeed.latestRoundData();
 //price of eth in terms of USD
 //3000.00000000
-return uint256(price * 1e10);//1**10==10000000000
+return uint256(price * 10000000000);//1**10==10000000000
 }
 function getConversionRate(uint256 ethAmount,AggregatorV3Interface priceFeed) internal view returns(uint256){
     uint256 ethPrice=getPrice(priceFeed);
-    uint ethAmountInUsd=(ethPrice*ethAmount)/1e18;
+    uint ethAmountInUsd=(ethPrice*ethAmount)/1000000000000000000;
     return ethAmountInUsd;
 }
 

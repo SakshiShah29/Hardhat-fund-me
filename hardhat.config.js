@@ -48,10 +48,10 @@ module.exports = {
 
   },
   gasReporter:{
-    enabled:false,
+    enabled:true,
     outputFile:"gas-report.text",
     noColours:true,
     currency:"USD  ",
-    coinmarketcap:COINMARKETCAP_API_KEY,
+    // coinmarketcap:COINMARKETCAP_API_KEY,
   }
 };
