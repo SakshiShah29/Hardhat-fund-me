@@ -27,7 +27,7 @@ contract FundMe {
     // Events (we have none!)
 
     // Modifiers
-    modifier onlyOwner {
+    modifier onlyOwner() {
         // require(msg.sender == i_owner);
         if (msg.sender != i_owner) revert FundMe__NotOwner();
         _;
@@ -49,7 +49,7 @@ contract FundMe {
     }
 
     /// @notice Funds our contract based on the ETH/USD price
-   function fund() public payable {
+    function fund() public payable {
         require(
             msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
             "You need to spend more ETH!"
@@ -74,31 +74,39 @@ contract FundMe {
         require(success);
     }
 
-    function cheaperWithdraw() public payable onlyOwner{
-        address[] memory funders=s_funders;
+    function cheaperWithdraw() public payable onlyOwner {
+        address[] memory funders = s_funders;
         //mappings cannot be in memory!!
-        for(uint256 funderIndex=0;funderIndex<funders.length;funderIndex++){
-            address funder=funders[funderIndex];
-            s_addressToAmountFunded[funder]=0;
+        for (
+            uint256 funderIndex = 0;
+            funderIndex < funders.length;
+            funderIndex++
+        ) {
+            address funder = funders[funderIndex];
+            s_addressToAmountFunded[funder] = 0;
         }
-        s_funders=new address[](0);
+        s_funders = new address[](0);
         (bool success, ) = i_owner.call{value: address(this).balance}("");
         require(success);
     }
 
-    function getOwner() public view returns(address){
+    function getOwner() public view returns (address) {
         return i_owner;
     }
 
-    function getFunder(uint256 index) public view returns(address){
+    function getFunder(uint256 index) public view returns (address) {
         return s_funders[index];
     }
 
-    function getAddressToAmountFunded(address funder) public view returns(uint256){
+    function getAddressToAmountFunded(address funder)
+        public
+        view
+        returns (uint256)
+    {
         return s_addressToAmountFunded[funder];
     }
 
-    function getPriceFeed() public view returns(AggregatorV3Interface){
+    function getPriceFeed() public view returns (AggregatorV3Interface) {
         return s_priceFeed;
     }
 }
